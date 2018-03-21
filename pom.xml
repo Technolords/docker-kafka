@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.technolords.docker</groupId>
+    <artifactId>kafka</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Technolords :: Docker :: Kafka</name>
+    <description>
+        A docker image for Kafka
+    </description>
+    <url>https://github.com/Technolords/docker-kafka</url>
+
+    <!--+
+        | Properties
+        +-->
+    <properties>
+        <!--+
+            | Project properties
+            +-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--+
+            | Version properties
+            +-->
+        <version.maven.plugin.docker>1.4.0</version.maven.plugin.docker>
+        <version.maven.plugin.release>2.5.3</version.maven.plugin.release>
+    </properties>
+
+    <!--+
+        | Source control management
+        +-->
+    <scm>
+        <connection>scm:git:https://github.com/Technolords/docker-kafka</connection>
+        <url>https://github.com/Technolords/docker-kafka/</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <!--+
+        | License information
+        +-->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <!--+
+        | Developers information
+        +-->
+    <developers>
+        <developer>
+            <name>Mike Ahlers</name>
+            <email>mike@technolords.net</email>
+            <organization>Technolords</organization>
+            <organizationUrl>https://www.technolords.net</organizationUrl>
+        </developer>
+    </developers>
+
+    <!--+
+        | Dependencies
+        +-->
+    <dependencies>
+    </dependencies>
+
+    <!--+
+        | Build
+        +-->
+    <build>
+        <!-- Allow placeholders in files in resources folder to be translated -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <defaultGoal>install</defaultGoal>
+
+        <plugins>
+
+            <plugin>
+                <!-- Required to perform a release (Maven Central) -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${version.maven.plugin.release}</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <goals>deploy</goals>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <!-- Required to build a Docker image (must be *after* share plugin) -->
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${version.maven.plugin.docker}</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skipPush>true</skipPush>
+                    <repository>docker.io/technolords/docker-kafka</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <KAFKA_VERSION>1.0.0-test</KAFKA_VERSION>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- Push image to Docker -->
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>${version.maven.plugin.docker}</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <skipBuild>true</skipBuild>
+                            <skipPush>false</skipPush>
+                            <repository>docker.io/technolords/mock</repository>
+                            <tag>latest</tag>
+                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                            <buildArgs>
+                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- Push image to Docker -->
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>${version.maven.plugin.docker}</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <skipBuild>true</skipBuild>
+                            <skipPush>false</skipPush>
+                            <repository>docker.io/technolords/mock</repository>
+                            <tag>latest</tag>
+                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                            <buildArgs>
+                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+
+    </profiles>
+
+</project>
