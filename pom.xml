@@ -29,6 +29,7 @@
         <!--+
             | Version properties
             +-->
+        <version.maven.plugin.deploy>2.8.2</version.maven.plugin.deploy>
         <version.maven.plugin.docker>1.4.0</version.maven.plugin.docker>
         <version.maven.plugin.release>2.5.3</version.maven.plugin.release>
     </properties>
@@ -85,6 +86,16 @@
         <defaultGoal>install</defaultGoal>
 
         <plugins>
+
+            <plugin>
+                <!-- Required to provide an alternative location (local deployment) -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${version.maven.plugin.deploy}</version>
+                <configuration>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <!-- Required to perform a release (Maven Central) -->
@@ -198,5 +209,13 @@
         </profile>
 
     </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+    </distributionManagement>
 
 </project>
