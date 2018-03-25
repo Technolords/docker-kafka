@@ -1,24 +1,30 @@
 FROM openjdk:8
 
 ARG KAFKA_VERSION
+ARG SCALA_VERSION=2.12
 
+LABEL scala.version=${SCALA_VERSION}
 LABEL kafka.version=${KAFKA_VERSION}
 
-RUN mkdir -p /etc/kafka
+RUN wget -q http://apache.mirrors.spacedump.net/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -O /tmp/kafka.tgz && \
+    mkdir -p /tmp/kafka && \
+    tar xfz /tmp/kafka.tgz -C /tmp/kafka && \
+    mkdir -p /etc/kafka && \
+    mv /tmp/kafka/kafka_${SCALA_VERSION}-${KAFKA_VERSION} /etc/kafka/install && \
+    rm /tmp/kafka.tgz
 
-# ADD target/${JAR_FILE} /etc/mock/mock.jar
+# Run Kafka
+#ADD docker/run-kafka.sh /etc/kafka
+#RUN chmod +x /etc/kafka/run-kafka.sh
 
-ADD docker/run-kafka.sh /etc/kafka
+EXPOSE 9092
 
-RUN chmod +x /etc/kafka/run-kafka.sh
+VOLUME ["/etc/kafka/config", "/etc/kafka/data"]
 
-EXPOSE 9090
+WORKDIR "/etc/kafka/install"
 
-#HEALTHCHECK --interval=1m --timeout=10s \
-#    CMD curl --fail http://localhost:9090/mock/cmd?config=current || exit 1
+ENTRYPOINT ["./bin/kafka-server-start.sh", "/etc/kafka/config/server.properties"]
 
-#VOLUME ["/etc/mock/config", "/var/mock/data"]
-
-#WORKDIR "/etc/mock/"
-
-ENTRYPOINT ["./run-kafka.sh"]
+#ADD docker/run-kafka.sh /etc/kafka
+#RUN chmod +x /etc/kafka/run-kafka.sh
+#ENTRYPOINT ["./run-kafka.sh"]
