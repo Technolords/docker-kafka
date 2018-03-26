@@ -9,7 +9,7 @@
     <groupId>net.technolords.docker</groupId>
     <artifactId>kafka</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>Technolords :: Docker :: Kafka</name>
     <description>
@@ -29,9 +29,13 @@
         <!--+
             | Version properties
             +-->
+        <version.kafka>1.0.1</version.kafka>
+        <version.log4j2>2.7</version.log4j2>
+        <version.maven.plugin.compiler>3.3</version.maven.plugin.compiler>
         <version.maven.plugin.deploy>2.8.2</version.maven.plugin.deploy>
         <version.maven.plugin.docker>1.4.0</version.maven.plugin.docker>
         <version.maven.plugin.release>2.5.3</version.maven.plugin.release>
+        <version.testng>6.14.2</version.testng>
     </properties>
 
     <!--+
@@ -69,6 +73,40 @@
         | Dependencies
         +-->
     <dependencies>
+
+        <!--+
+            | Default scope
+            +-->
+        <dependency>
+            <!-- Required to use logging -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${version.log4j2}</version>
+        </dependency>
+
+        <dependency>
+            <!-- Required to use logging -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${version.log4j2}</version>
+        </dependency>
+
+        <dependency>
+            <!-- Required to bridge slf4j over log4j -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${version.log4j2}</version>
+        </dependency>
+
+        <!--+
+            | Test scope
+            +-->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${version.testng}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <!--+
@@ -86,6 +124,17 @@
         <defaultGoal>install</defaultGoal>
 
         <plugins>
+
+            <plugin>
+                <!-- Required to compile the java sources against a JVM spec -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.maven.plugin.compiler}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <!-- Required to provide an alternative location (local deployment) -->
@@ -118,7 +167,7 @@
                 <version>${version.maven.plugin.docker}</version>
                 <executions>
                     <execution>
-                        <id>default</id>
+                        <id>build-image</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
@@ -131,7 +180,7 @@
                     <tag>${project.version}</tag>
                     <buildArgs>
                         <POM_VERSION>${project.version}</POM_VERSION>
-                        <KAFKA_VERSION>1.0.1</KAFKA_VERSION>
+                        <KAFKA_VERSION>${version.kafka}</KAFKA_VERSION>
                     </buildArgs>
                 </configuration>
             </plugin>
@@ -152,21 +201,29 @@
                         <version>${version.maven.plugin.docker}</version>
                         <executions>
                             <execution>
-                                <id>default</id>
+                                <id>tag-image</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>tag</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>push-image</id>
+                                <phase>deploy</phase>
                                 <goals>
                                     <goal>push</goal>
                                 </goals>
                             </execution>
                         </executions>
                         <configuration>
-                            <skipBuild>true</skipBuild>
+                            <!--<skipBuild>true</skipBuild>-->
                             <skipPush>false</skipPush>
-                            <repository>docker.io/technolords/mock</repository>
+                            <repository>docker.io/technolords/kafka</repository>
                             <tag>latest</tag>
                             <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                             <buildArgs>
                                 <POM_VERSION>${project.version}</POM_VERSION>
-                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                                <KAFKA_VERSION>${version.kafka}</KAFKA_VERSION>
                             </buildArgs>
                         </configuration>
                     </plugin>
@@ -199,7 +256,8 @@
                             <tag>latest</tag>
                             <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                             <buildArgs>
-                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                                <POM_VERSION>${project.version}</POM_VERSION>
+                                <KAFKA_VERSION>${version.kafka}</KAFKA_VERSION>
                             </buildArgs>
                         </configuration>
                     </plugin>
