@@ -4,7 +4,7 @@
 
     <groupId>net.technolords.docker</groupId>
     <artifactId>kafka</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Technolords :: Docker :: Kafka</name>
@@ -26,7 +26,7 @@
             | Version properties
             +-->
         <version.health.check>1.0.0</version.health.check>
-        <version.kafka>1.0.1</version.kafka>
+        <version.kafka>1.1.0</version.kafka>
         <version.maven.plugin.deploy>2.8.2</version.maven.plugin.deploy>
         <version.maven.plugin.docker>1.4.0</version.maven.plugin.docker>
         <version.maven.plugin.release>2.5.3</version.maven.plugin.release>
