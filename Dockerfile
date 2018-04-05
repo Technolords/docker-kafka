@@ -17,7 +17,7 @@ ARG SCALA_VERSION
 RUN wget -q http://apache.mirrors.spacedump.net/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -O /tmp/kafka.tgz && \
     mkdir -p /tmp/kafka && \
     tar xfz /tmp/kafka.tgz -C /tmp/kafka && \
-    rm /tmp/kafka.tgz
+    mv /tmp/kafka/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config /tmp/kafka/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config-ref
 
 FROM openjdk:8
 
