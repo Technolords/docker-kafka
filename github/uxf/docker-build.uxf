@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>90</x>
+      <y>60</y>
+      <w>250</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>health-check-fetcher
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>60</y>
+      <w>350</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>kafka-fetcher</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>330</y>
+      <w>470</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>/technolords/kafka/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>110</y>
+      <w>170</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>halign=left
+lt=.
+/tmp/health-check.jar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>730</x>
+      <y>120</y>
+      <w>250</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>halign=left
+lt=.
+/tmp/kafka/kafka_2.12-1.1.0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>400</y>
+      <w>340</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>halign=left
+lt=.
+/etc/kafka/install/health-check.jar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>150</y>
+      <w>170</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>150.0;280.0;10.0;280.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>490</y>
+      <w>340</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>halign=left
+lt=.
+/etc/kafka/install</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>690</x>
+      <y>160</y>
+      <w>180</w>
+      <h>370</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;350.0;160.0;350.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>410</x>
+      <y>210</y>
+      <w>210</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>bg=gray
+Docker multi-stage build</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
