@@ -172,7 +172,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>net.technolords.util.DockerRunUtil</mainClass>
+                                    <mainClass>net.technolords.util.DockerRun</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
