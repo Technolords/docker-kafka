@@ -202,6 +202,7 @@
                         <POM_VERSION>${project.version}</POM_VERSION>
                         <KAFKA_VERSION>${version.kafka}</KAFKA_VERSION>
                         <HEALTH_CHECK_VERSION>${version.health.check}</HEALTH_CHECK_VERSION>
+                        <DOCKER_RUN_VERSION>${project.build.finalName}.jar</DOCKER_RUN_VERSION>
                     </buildArgs>
                 </configuration>
             </plugin>
@@ -239,6 +240,7 @@
                                 <POM_VERSION>${project.version}</POM_VERSION>
                                 <KAFKA_VERSION>${version.kafka}</KAFKA_VERSION>
                                 <HEALTH_CHECK_VERSION>${version.health.check}</HEALTH_CHECK_VERSION>
+                                <DOCKER_RUN_VERSION>${project.build.finalName}.jar</DOCKER_RUN_VERSION>
                             </buildArgs>
                         </configuration>
                     </plugin>
