@@ -145,7 +145,7 @@ Docker multi-stage build</panel_attributes>
     </coordinates>
     <panel_attributes>halign=left
 lt=.
-target/todo.jar</panel_attributes>
+target/docker-run.jar</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -158,7 +158,7 @@ target/todo.jar</panel_attributes>
     </coordinates>
     <panel_attributes>halign=left
 lt=.
-/etc/kafka/install/todo.jar</panel_attributes>
+/etc/kafka/install/docker-run.jar</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

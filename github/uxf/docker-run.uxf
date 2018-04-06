@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>140</y>
+      <w>470</w>
+      <h>470</h>
+    </coordinates>
+    <panel_attributes>/technolords/kafka/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>200</y>
+      <w>340</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>halign=left
+lt=.
+/etc/kafka/install/bin
+/etc/kafka/install/config-ref
+/etc/kafka/install/docker-run.jar
+/etc/kafka/install/health-check.jar
+/etc/kafka/install/libs</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>620</x>
+      <y>20</y>
+      <w>210</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>bg=gray
+Docker run</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>60</x>
+      <y>510</y>
+      <w>340</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>bg=red
+Todo:
+- create script that invokes jar
+  and then starts kafka (script)
+- ADD script in correct location
+- ENTRYPOINT update
+
+- fix log rotation
+- fix log output (console only?)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>330</y>
+      <w>340</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>halign=left
+lt=.
+/etc/kafka/install/logs -&gt; mount to volume
+/etc/kafka/install/data -&gt; mount to volume
+/etc/kafka/install/config -&gt; mount to volume
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>530</y>
+      <w>340</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>halign=left
+lt=.
+/etc/kafka/install/config/server.properties
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>50</x>
+      <y>140</y>
+      <w>350</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>environment variables</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>430</y>
+      <w>340</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>halign=left
+lt=-
+/etc/kafka/install/config/*
+/etc/kafka/install/config/server.properties
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>190</y>
+      <w>360</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>340.0;290.0;10.0;290.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>390</x>
+      <y>240</y>
+      <w>180</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>160.0;210.0;10.0;210.0;10.0;10.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>460</y>
+      <w>70</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;90.0;50.0;90.0;50.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>140</y>
+      <w>290</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>ENTRYPOINT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>190</y>
+      <w>340</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;260.0;320.0;260.0;320.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1060</x>
+      <y>510</y>
+      <w>340</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>bg=orange
+Todo:
+- How to model invocation?
+- entrypointnis script a
+  which invokes script b</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

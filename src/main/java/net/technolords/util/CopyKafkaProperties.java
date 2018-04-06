@@ -13,6 +13,7 @@ public class CopyKafkaProperties {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String PATH_SOURCE = "config-ref";
     private static final String PATH_TARGET = "config";
+    private static final String PROPERTIES_FILE_SUFFIX = ".properties";
 
     public Path copyPropertiesFromRef() throws IOException {
         Path pathToSource = FileSystems.getDefault().getPath(PATH_SOURCE);
@@ -43,7 +44,7 @@ public class CopyKafkaProperties {
 
         // Copy property files
         Files.walk(source, 1)
-                .filter(path -> path.toString().endsWith(".properties"))
+                .filter(path -> path.toString().endsWith(PROPERTIES_FILE_SUFFIX))
                 .forEach(path -> {
                     LOGGER.info("About to copy: {}", path.toString());
                     Path newTarget = Paths.get(target.toAbsolutePath().toString(), path.getFileName().toString());
