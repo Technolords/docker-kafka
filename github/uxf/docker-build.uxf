@@ -178,14 +178,14 @@ lt=.
       <x>1020</x>
       <y>350</y>
       <w>170</w>
-      <h>80</h>
+      <h>60</h>
     </coordinates>
     <panel_attributes>halign=left
 lt=.
 - bin
 - config-ref
 - libs
-- logs
+
 </panel_attributes>
     <additional_attributes/>
   </element>

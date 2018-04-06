@@ -44,7 +44,7 @@ ADD target/${DOCKER_RUN_VERSION} /etc/kafka/install/docker-run.jar
 
 EXPOSE 9092
 
-VOLUME ["/etc/kafka/config", "/etc/kafka/data", "/etc/kafka/install/logs"]
+VOLUME ["/etc/kafka/config", "/etc/kafka/install/data", "/etc/kafka/install/logs"]
 
 WORKDIR "/etc/kafka/install"
 
