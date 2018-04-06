@@ -18,6 +18,10 @@ public class CopyKafkaProperties {
     public Path copyPropertiesFromRef() throws IOException {
         Path pathToSource = FileSystems.getDefault().getPath(PATH_SOURCE);
         Path pathToTarget = FileSystems.getDefault().getPath(PATH_TARGET);
+        if (Files.exists(pathToTarget)) {
+            LOGGER.info("Config folder present, assuming property files are there also (skipping initialization)");
+            return pathToTarget;
+        }
         return this.copyPropertiesFromRef(pathToSource, pathToTarget);
     }
 

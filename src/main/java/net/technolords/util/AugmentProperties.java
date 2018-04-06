@@ -4,25 +4,27 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PropertiesManager {
+public class AugmentProperties {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String SERVER_PROPERTIES = "server.properties";
 
-    public void executeMode() {
-        LOGGER.info("Executing init mode...");
-        // TODO: find source
-        // TODO: use environment variables
-        // TODO: copy
+    public void augmentServerProperties(Path propertiesFolder) throws IOException {
+        // Fetch server.properties
+        Path pathToServerProperties = Paths.get(propertiesFolder.toAbsolutePath().toString(), SERVER_PROPERTIES);
+        Properties serverProperties = this.readPropertiesFromPath(pathToServerProperties);
+        LOGGER.info("Total properties found: {}", serverProperties.size());
+        // Assert correct defaults
+        // TODO: introduce flag to detect changes (no changes = file is ok, no need to (re)write
     }
 
-    public Properties readPropertiesFromPath(String path) throws IOException {
-        Path pathToData = FileSystems.getDefault().getPath(path);
+    public Properties readPropertiesFromPath(Path pathToData) throws IOException {
         LOGGER.info("File exists: {}", Files.exists(pathToData));
         Properties properties = new Properties();
         properties.load(Files.newInputStream(pathToData, StandardOpenOption.READ));
