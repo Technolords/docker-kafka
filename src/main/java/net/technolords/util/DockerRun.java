@@ -24,7 +24,7 @@ public class DockerRun {
                     break;
                 case MODE_ENV:
                     LOGGER.info("Executing env mode...");
-                    // TODO: process env
+                    // TODO: process env and more
                     this.environmentManager.executeMode();
                     break;
                 default:
