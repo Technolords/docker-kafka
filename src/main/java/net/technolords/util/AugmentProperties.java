@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class AugmentProperties {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private static final String SERVER_PROPERTIES = "server.properties";
+    public static final String SERVER_PROPERTIES = "server.properties";
     private static final String KEY_BROKER_ID = "broker.id";
     private static final String KEY_LOG_DIRS = "log.dirs";
     private static final String KEY_ZOOKEEPER_CONNECT = "zookeeper.connect";
