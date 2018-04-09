@@ -4,9 +4,9 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>500</x>
-      <y>140</y>
-      <w>470</w>
+      <x>90</x>
+      <y>130</y>
+      <w>1230</w>
       <h>470</h>
     </coordinates>
     <panel_attributes>/technolords/kafka/</panel_attributes>
@@ -15,8 +15,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>200</y>
+      <x>140</x>
+      <y>190</y>
       <w>340</w>
       <h>100</h>
     </coordinates>
@@ -32,7 +32,7 @@ lt=.
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>620</x>
+      <x>590</x>
       <y>20</y>
       <w>210</w>
       <h>70</h>
@@ -42,29 +42,10 @@ Docker run</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>60</x>
-      <y>510</y>
-      <w>340</w>
-      <h>160</h>
-    </coordinates>
-    <panel_attributes>bg=red
-Todo:
-- create script that invokes jar
-  and then starts kafka (script)
-- ADD script in correct location
-- ENTRYPOINT update
-
-- fix log rotation
-- fix log output (console only?)</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>330</y>
+      <x>140</x>
+      <y>320</y>
       <w>340</w>
       <h>70</h>
     </coordinates>
@@ -79,34 +60,22 @@ lt=.
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>530</y>
-      <w>340</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>halign=left
-lt=.
-/etc/kafka/install/config/server.properties
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>50</x>
-      <y>140</y>
+      <x>360</x>
+      <y>470</y>
       <w>350</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes>environment variables</panel_attributes>
+    <panel_attributes>DockerRun
+
+java -jar docker-run.jar</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>430</y>
-      <w>340</w>
+      <x>530</x>
+      <y>320</y>
+      <w>360</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>halign=left
@@ -119,71 +88,177 @@ lt=-
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>210</x>
-      <y>190</y>
-      <w>360</w>
-      <h>310</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>340.0;290.0;10.0;290.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>390</x>
-      <y>240</y>
-      <w>180</w>
-      <h>230</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>160.0;210.0;10.0;210.0;10.0;10.0;160.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>880</x>
-      <y>460</y>
-      <w>70</w>
+      <x>470</x>
+      <y>230</y>
+      <w>240</w>
       <h>110</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;90.0;50.0;90.0;50.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1060</x>
-      <y>140</y>
-      <w>290</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>ENTRYPOINT</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>880</x>
-      <y>190</y>
-      <w>340</w>
-      <h>280</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;260.0;320.0;260.0;320.0;10.0</additional_attributes>
+    <additional_attributes>220.0;90.0;220.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1060</x>
-      <y>510</y>
-      <w>340</w>
+      <x>840</x>
+      <y>200</y>
+      <w>420</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>bg=gray
+DockerRun:
+- Copy from config-ref to config (initialization)
+- Merge any environment variables into server.properties</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>80</x>
+      <y>680</y>
+      <w>240</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>220.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>660</y>
+      <w>840</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>ENTRYPOINT
+sync-properties-and-run-kafka.sh</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1130</x>
+      <y>680</y>
+      <w>210</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>190.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>510</x>
+      <y>520</y>
+      <w>30</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>760</x>
+      <y>470</y>
+      <w>500</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Kafka
+
+./bin/kafka-server-start.sh /etc/kafka/install/config/server.properties</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>930</x>
+      <y>520</y>
+      <w>30</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>610</x>
+      <y>380</y>
+      <w>30</w>
       <h>110</h>
     </coordinates>
-    <panel_attributes>bg=orange
-Todo:
-- How to model invocation?
-- entrypointnis script a
-  which invokes script b</panel_attributes>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>960</x>
+      <y>320</y>
+      <w>300</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>bg=gray
+Kafka:
+- Starts with (updated) server.properties</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>380</y>
+      <w>30</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>140</x>
+      <y>430</y>
+      <w>190</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=green
+Config volume starts
+empty, but is populated
+the first time it runs.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>760</x>
+      <y>230</y>
+      <w>100</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;..</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>350</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;..</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1050</x>
+      <y>380</y>
+      <w>30</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;..</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
