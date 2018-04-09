@@ -2,7 +2,7 @@
 
 #### Index
 - [Introduction](https://github.com/Technolords/docker-kafka#introduction)
-- [Deployment example](https://github.com/Technolords/docker-kafka#deployment-example)
+- [Deployment example](https://github.com/Technolords/docker-kafka#example)
 - [Image explained](https://github.com/Technolords/docker-kafka/wiki)
 
 ## Introduction
@@ -13,7 +13,7 @@ be present. This enables cluster deployments without hassle (the number
 of ZooKeeper instances is unrelated to the number of Kafka
 instances).
 
-## Example deployment
+## Example
 
 The image expects three volumes to be defined, and any environment
 variables meant for Kafka must be prefixed with `KAFKA.`. For example:
