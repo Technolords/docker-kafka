@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,47 +24,33 @@ public class AugmentProperties {
     private static final String DEFAULT_ZOOKEEPER_CONNECT = "localhost:2181";
     private static final String ENV_PROP_PREFIX = "kafka.";
 
-    /*
-        2018-04-08 22:15:16,314 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy property files from config-ref to config
-        2018-04-08 22:15:16,315 [INFO] [main] [net.technolords.util.CopyKafkaProperties] Source folder exist: true
-        2018-04-08 22:15:16,316 [INFO] [main] [net.technolords.util.CopyKafkaProperties] Target folder exist: false
-        2018-04-08 22:15:16,316 [INFO] [main] [net.technolords.util.CopyKafkaProperties] Creating target folder...
-        2018-04-08 22:15:16,356 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/connect-console-sink.properties
-        2018-04-08 22:15:16,358 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/connect-console-source.properties
-        2018-04-08 22:15:16,358 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/connect-distributed.properties
-        2018-04-08 22:15:16,360 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/connect-file-sink.properties
-        2018-04-08 22:15:16,360 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/connect-file-source.properties
-        2018-04-08 22:15:16,360 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/connect-log4j.properties
-        2018-04-08 22:15:16,361 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/connect-standalone.properties
-        2018-04-08 22:15:16,361 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/consumer.properties
-        2018-04-08 22:15:16,361 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/log4j.properties
-        2018-04-08 22:15:16,362 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/producer.properties
-        2018-04-08 22:15:16,362 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/server.properties
-        2018-04-08 22:15:16,362 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/tools-log4j.properties
-        2018-04-08 22:15:16,362 [INFO] [main] [net.technolords.util.CopyKafkaProperties] About to copy: config-ref/zookeeper.properties
-        2018-04-08 22:15:16,363 [INFO] [main] [net.technolords.util.AugmentProperties] File exists: true
-        2018-04-08 22:15:16,364 [INFO] [main] [net.technolords.util.AugmentProperties] Total properties found: 18
-        2018-04-08 22:15:16,365 [INFO] [main] [net.technolords.util.AugmentProperties] Validating default properties...
-        2018-04-08 22:15:16,365 [INFO] [main] [net.technolords.util.AugmentProperties] Updated log.dirs -> /etc/kafka/install/data
-        2018-04-08 22:15:16,365 [INFO] [main] [net.technolords.util.AugmentProperties] Validating environment properties
-        2018-04-08 22:15:16,365 [INFO] [main] [net.technolords.util.AugmentProperties] Found environment key: KAFKA.BROKER.ID -> real key: broker.id
-        2018-04-08 22:15:16,366 [INFO] [main] [net.technolords.util.AugmentProperties] Updated broker.id -> 5
-
-        vs
-
-        2018-04-08 22:17:32,410 [INFO] [main] [net.technolords.util.CopyKafkaProperties] Config folder present, assuming property files are there also (skipping initialization)
-        2018-04-08 22:17:32,412 [INFO] [main] [net.technolords.util.AugmentProperties] File exists: true
-        2018-04-08 22:17:32,413 [INFO] [main] [net.technolords.util.AugmentProperties] Total properties found: 18
-        2018-04-08 22:17:32,414 [INFO] [main] [net.technolords.util.AugmentProperties] Validating default properties...
-        2018-04-08 22:17:32,414 [INFO] [main] [net.technolords.util.AugmentProperties] Validating environment properties
-        2018-04-08 22:17:32,414 [INFO] [main] [net.technolords.util.AugmentProperties] Found environment key: KAFKA.BROKER.ID -> real key: broker.id
+    /**
+     * Auxiliary method to augment the properties. This consists of the following steps:
+     * - read properties from file.
+     * - check whether the defaults are correct.
+     * - check if relevant environment variables are present and update where needed.
+     * - if any changes where made, write this back to the file.
+     *
+     * Note that relevant environment variables mean keys with a specific prefix: kafka.
+     * So kafka.whatever is a valid key. Even when this key is not present of the current
+     * configuration it is added regardless. Which means this mechanism is future proof
+     * as in you can define any key and (future) Kafka can/will use it.
+     *
+     * Example output (of a change property):
+     *
+     * 2018-04-08 22:15:16,366 [INFO] [main] [net.technolords.util.AugmentProperties] Updated broker.id -> 5
+     *
+     * @param propertiesFolder
+     *  The folder where the property file(s) are.
+     *
+     * @throws IOException
+     *  When reading or writing fails.
      */
-
     public void augmentServerProperties(Path propertiesFolder) throws IOException {
         // Fetch server.properties
         Path pathToServerProperties = Paths.get(propertiesFolder.toAbsolutePath().toString(), SERVER_PROPERTIES);
         Properties serverProperties = this.readPropertiesFromPath(pathToServerProperties);
-        LOGGER.info("Total properties found: {}", serverProperties.size());
+        LOGGER.debug("Total properties found: {}", serverProperties.size());
         // Assert correct defaults
         boolean changed = this.checkDefaults(serverProperties);
         // Assert environment variables
@@ -75,8 +60,19 @@ public class AugmentProperties {
         }
     }
 
+    /**
+     * Auxiliary method to read the properties.
+     *
+     * @param pathToData
+     *  The path to the property file.
+     * @return
+     *  The properties.
+     *
+     * @throws IOException
+     *  When reading the properties fails.
+     */
     public Properties readPropertiesFromPath(Path pathToData) throws IOException {
-        LOGGER.info("File exists: {}", Files.exists(pathToData));
+        LOGGER.debug("File exists: {}", Files.exists(pathToData));
         Properties properties = new Properties();
         properties.load(Files.newInputStream(pathToData, StandardOpenOption.READ));
         return properties;
@@ -86,9 +82,9 @@ public class AugmentProperties {
      * Check for correct default values and change these where needed.
      *
      * @param properties
-     *  The current loaded properties
+     *  The current loaded properties.
      * @return
-     *  Whether one or more properties where changed
+     *  Whether one or more properties where changed.
      */
     protected boolean checkDefaults(Properties properties) {
         LOGGER.info("Validating default properties...");
@@ -122,9 +118,13 @@ public class AugmentProperties {
     }
 
     /**
-     * Auxiliary method to check for (relevant) environment variables, and when present
+     * Auxiliary method to check for (relevant) environment variables, and when present check if these
+     * are up to date.
+     *
      * @param properties
+     *  The current properties.
      * @return
+     *  Whether the properties where changed.
      */
     protected boolean parseEnvironmentVariables(Properties properties) {
         LOGGER.info("Validating environment properties");
@@ -135,13 +135,13 @@ public class AugmentProperties {
             // Filter keys by kafka prefix
             if (key.toLowerCase().startsWith(ENV_PROP_PREFIX)) {
                 String realKey = key.substring(ENV_PROP_PREFIX.length(), key.length()).toLowerCase();
-                LOGGER.info("Found environment key: {} -> real key: {}", key, realKey);
+                LOGGER.debug("Found environment key: {} -> real key: {}", key, realKey);
                 current = properties.getProperty(realKey);
                 desired = environmentMap.get(key);
                 if (current == null) {
                     properties.put(realKey, desired);
                     changed = true;
-                    LOGGER.info("Updated {} -> {}", realKey, desired);
+                    LOGGER.info("Added {} -> {}", realKey, desired);
                 } else {
                     if (!current.equals(desired)) {
                         properties.put(realKey, desired);
@@ -154,31 +154,39 @@ public class AugmentProperties {
         return changed;
     }
 
-    /*
-        #Generated at: Sun Apr 08 22:15:16 UTC 2018
-        #Sun Apr 08 22:15:16 UTC 2018
-        socket.send.buffer.bytes=102400
-        socket.request.max.bytes=104857600
-        log.retention.check.interval.ms=300000
-        log.retention.hours=168
-        num.io.threads=8
-        broker.id=5
-        transaction.state.log.replication.factor=1
-        group.initial.rebalance.delay.ms=0
-        log.dirs=/etc/kafka/install/data
-        offsets.topic.replication.factor=1
-        num.network.threads=3
-        socket.receive.buffer.bytes=102400
-        log.segment.bytes=1073741824
-        num.recovery.threads.per.data.dir=1
-        num.partitions=1
-        transaction.state.log.min.isr=1
-        zookeeper.connection.timeout.ms=6000
-        zookeeper.connect=localhost\:2181
+    /**
+     * Auxiliary method to write the properties to file. Example output:
+     *
+     *  #Sun Apr 08 22:15:16 UTC 2018
+     *  socket.send.buffer.bytes=102400
+     *  socket.request.max.bytes=104857600
+     *  log.retention.check.interval.ms=300000
+     *  log.retention.hours=168
+     *  num.io.threads=8
+     *  broker.id=5
+     *  transaction.state.log.replication.factor=1
+     *  group.initial.rebalance.delay.ms=0
+     *  log.dirs=/etc/kafka/install/data
+     *  offsets.topic.replication.factor=1
+     *  num.network.threads=3
+     *  socket.receive.buffer.bytes=102400
+     *  log.segment.bytes=1073741824
+     *  num.recovery.threads.per.data.dir=1
+     *  num.partitions=1
+     *  transaction.state.log.min.isr=1
+     *  zookeeper.connection.timeout.ms=6000
+     *  zookeeper.connect=localhost\:2181
+     *
+     * @param properties
+     *  The properties to be written.
+     * @param pathToServerProperties
+     *  The path of the properties file.
+     *
+     * @throws IOException
+     *  When writing the properties file fails.
      */
-
     public void storePropertiesAsFile(Properties properties, Path pathToServerProperties) throws IOException {
         BufferedWriter writer = Files.newBufferedWriter(pathToServerProperties, StandardCharsets.UTF_8);
-        properties.store(writer, String.format("Generated at: %s", new Date().toString()));
+        properties.store(writer, "Generated by: DockerRun");
     }
 }

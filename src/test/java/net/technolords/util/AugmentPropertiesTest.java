@@ -28,7 +28,7 @@ public class AugmentPropertiesTest {
     }
 
     @Test
-    public void testParseEnvironmentVariables() throws IOException {
+    public void testParseEnvironmentVariables() {
         LOGGER.info("About to test parsing of environment variables");
         this.updateEnvironmentByReflection("KAFKA.BROKER.ID", "5");
         AugmentProperties augmentServerProperties = new AugmentProperties();
@@ -38,6 +38,15 @@ public class AugmentPropertiesTest {
         Assert.assertTrue(changed);
     }
 
+    /**
+     * Hack to change the map which hold environment variables. Note that this hack might
+     * be platform dependent (i.e. Linux vs Windows). This hack works for Linux.
+     *
+     * @param key
+     *  The key associated with the environment variable.
+     * @param value
+     *  The value associated with the environment variable.
+     */
     public static void updateEnvironmentByReflection(String key, String value) {
         try {
             Map<String, String> env = System.getenv();
