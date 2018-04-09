@@ -42,13 +42,17 @@ COPY --from=health-check-fetcher /tmp/health-check.jar /etc/kafka/install
 
 ADD target/${DOCKER_RUN_VERSION} /etc/kafka/install/docker-run.jar
 
+ADD docker/sync-properties-and-run-kafka.sh /etc/kafka/install
+
+RUN chmod +x /etc/kafka/install/sync-properties-and-run-kafka.sh
+
 EXPOSE 9092
 
-VOLUME ["/etc/kafka/config", "/etc/kafka/install/data", "/etc/kafka/install/logs"]
+VOLUME ["/etc/kafka/install/config", "/etc/kafka/install/data", "/etc/kafka/install/logs"]
 
 WORKDIR "/etc/kafka/install"
 
 HEALTHCHECK --interval=1m --timeout=10s \
     CMD java -jar health-check.jar | grep -P "^3"
 
-ENTRYPOINT ["./bin/kafka-server-start.sh", "/etc/kafka/config/server.properties"]
+ENTRYPOINT ["./sync-properties-and-run-kafka.sh"]
