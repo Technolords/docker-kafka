@@ -4,7 +4,7 @@
 
     <groupId>net.technolords.docker</groupId>
     <artifactId>kafka</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
 
     <name>Technolords :: Docker :: Kafka</name>
@@ -43,7 +43,7 @@
     <scm>
         <connection>scm:git:https://github.com/Technolords/docker-kafka</connection>
         <url>https://github.com/Technolords/docker-kafka/</url>
-        <tag>HEAD</tag>
+        <tag>1.1.1</tag>
     </scm>
 
     <!--+
