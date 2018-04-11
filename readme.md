@@ -31,7 +31,7 @@ docker run --detach \
     --volume /var/data/kafka1/logs:/etc/kafka/install/logs \
     --env "KAFKA.BROKER.ID=1" \
     --env "KAFKA.ZOOKEEPER.CONNECT=192.168.100.10:2181,192.168.100.11:2181,192.168.100.12:2181" \
-    --env "KAFKA.WHAT.EVER=sample" \
+    --env "KAFKA.WHAT.EVER=value" \
     technolords/kafka:latest
 echo "...done!"
 ```
@@ -39,7 +39,7 @@ echo "...done!"
 The *data* volume contains the `log.dirs` (i.e. topic data) while the *logs*
 volume contains the Kafka logging itself (i.e. log4j).
 
-Using the example above will create a `what.ever=sample` entry in the
+Using the example above will create a `what.ever=value` entry in the
 *server.properties* file.
 
 For more properties, see:
