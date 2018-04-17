@@ -13,6 +13,9 @@ be present. This enables cluster deployments without hassle (the number
 of ZooKeeper instances is unrelated to the number of Kafka
 instances).
 
+The image bootstraps the configuration files automatically (first run)
+and additionally merges this with the provided environment variables.
+
 ## Example
 
 The image expects three volumes to be defined, and any environment
