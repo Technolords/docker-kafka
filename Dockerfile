@@ -46,11 +46,17 @@ ADD docker/sync-properties-and-run-kafka.sh /etc/kafka/install
 
 RUN chmod +x /etc/kafka/install/sync-properties-and-run-kafka.sh
 
+RUN useradd -r -u 500 -c "Kafka service account" -s /bin/false kafka
+
+RUN chown -R kafka: /etc/kafka/install
+
 EXPOSE 9092
 
 VOLUME ["/etc/kafka/install/config", "/etc/kafka/install/data", "/etc/kafka/install/logs"]
 
 WORKDIR "/etc/kafka/install"
+
+USER kafka
 
 HEALTHCHECK --interval=1m --timeout=10s \
     CMD java -jar health-check.jar | grep -P "^3"
