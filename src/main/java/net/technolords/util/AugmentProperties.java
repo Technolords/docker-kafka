@@ -19,10 +19,13 @@ public class AugmentProperties {
     private static final String KEY_BROKER_ID = "broker.id";
     private static final String KEY_LOG_DIRS = "log.dirs";
     private static final String KEY_ZOOKEEPER_CONNECT = "zookeeper.connect";
+    private static final String KEY_LISTENER = "listeners";
+    private static final String KEY_ADVERTISED_LISTENER = "advertised.listeners";
     private static final String DEFAULT_BROKER_ID = "0";
     private static final String DEFAULT_LOG_DIRS = "/etc/kafka/install/data";
     private static final String DEFAULT_ZOOKEEPER_CONNECT = "localhost:2181";
     private static final String ENV_PROP_PREFIX = "kafka.";
+    private static final String ENV_HOSTNAME = "HOSTNAME";
 
     /**
      * Auxiliary method to augment the properties. This consists of the following steps:
@@ -131,6 +134,8 @@ public class AugmentProperties {
         String current, desired;
         boolean changed = false;
         Map<String, String> environmentMap = System.getenv();
+        // Set default hostnames (to circumvent 0.0.0.0 binding as well as problematic 127.0.0.1)
+        this.setSensibleDefaultForHost(environmentMap, properties);
         for (String key : environmentMap.keySet()) {
             // Filter keys by kafka prefix
             if (key.toLowerCase().startsWith(ENV_PROP_PREFIX)) {
@@ -152,6 +157,36 @@ public class AugmentProperties {
             }
         }
         return changed;
+    }
+
+    /**
+     * Kafka requires a route-able ip in order to function, and unfortunately it does not
+     * bind on 0.0.0.0. If you do nothing it binds on localhost, i.e. 127.0.0.1 which is
+     * also not good. This method will derive the hostname from the actual HOSTNAME environment
+     * set upon creation of a container. In other words, this is a better candidate for
+     * a default (which still can be overridden).
+     */
+    protected void setSensibleDefaultForHost(Map<String, String> environmentMap, Properties properties) {
+        StringBuffer buffer = new StringBuffer();
+        boolean ssl = false;
+        for (String key : environmentMap.keySet()) {
+            // When a keystore location is defined, it means kafka (must) run as secure
+            if (key.toLowerCase().equals("ssl.keystore.location")) {
+                ssl = true;
+                break;
+            }
+        }
+        if (ssl) {
+            buffer.append("SSL://");
+        } else {
+            buffer.append("PLAINTEXT://");
+        }
+        String hostname = environmentMap.get(ENV_HOSTNAME);
+        buffer.append(hostname);
+        buffer.append(":9092");
+        LOGGER.info("Found HOSTNAME: {} -> (advertised)listener: {}", hostname, buffer.toString());
+        properties.put(KEY_LISTENER, buffer.toString());
+        properties.put(KEY_ADVERTISED_LISTENER, buffer.toString());
     }
 
     /**
