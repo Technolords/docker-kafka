@@ -57,10 +57,8 @@ public class AugmentProperties {
         // Assert correct defaults
         boolean changed = this.checkDefaults(serverProperties);
         // Assert environment variables
-        changed |= this.parseEnvironmentVariables(serverProperties);
-        if (changed) {
-            this.storePropertiesAsFile(serverProperties, pathToServerProperties);
-        }
+        this.parseEnvironmentVariables(serverProperties);
+        this.storePropertiesAsFile(serverProperties, pathToServerProperties);
     }
 
     /**
@@ -171,7 +169,7 @@ public class AugmentProperties {
         boolean ssl = false;
         for (String key : environmentMap.keySet()) {
             // When a keystore location is defined, it means kafka (must) run as secure
-            if (key.toLowerCase().equals("ssl.keystore.location")) {
+            if (key.toLowerCase().equals("kafka.ssl.keystore.location")) {
                 ssl = true;
                 break;
             }
