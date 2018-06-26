@@ -2,6 +2,8 @@ package net.technolords.util;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -180,6 +182,12 @@ public class AugmentProperties {
             buffer.append("PLAINTEXT://");
         }
         String hostname = environmentMap.get(ENV_HOSTNAME);
+        try {
+            InetAddress address = InetAddress.getByName(hostname);
+            hostname = address.getHostAddress();
+        } catch (UnknownHostException e) {
+            LOGGER.warn("Unable to resolve address '{}' to ip...", hostname);
+        }
         buffer.append(hostname);
         buffer.append(":9092");
         LOGGER.info("Found HOSTNAME: {} -> (advertised)listener: {}", hostname, buffer.toString());

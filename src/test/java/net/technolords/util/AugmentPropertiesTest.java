@@ -2,6 +2,8 @@ package net.technolords.util;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Map;
@@ -15,6 +17,14 @@ import org.testng.annotations.Test;
 public class AugmentPropertiesTest {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public static final String TEST_PROPERTIES = "src/test/resources/source/server.properties";
+
+    @Test
+    public void testHostnameToAddress() throws UnknownHostException {
+        LOGGER.info("About to test hostname to address");
+        String hostname = "localhost";
+        InetAddress address = InetAddress.getByName(hostname);
+        LOGGER.info("InetAddress: {}", address.getHostAddress());
+    }
 
     @Test
     public void testReadProperties() throws IOException {
