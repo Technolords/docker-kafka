@@ -4,7 +4,7 @@
 
     <groupId>net.technolords.docker</groupId>
     <artifactId>kafka</artifactId>
-    <version>1.1.4-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Technolords :: Docker :: Kafka</name>
@@ -26,7 +26,7 @@
             | Version properties
             +-->
         <version.health.check>1.0.0</version.health.check>
-        <version.kafka>1.1.0</version.kafka>
+        <version.kafka>2.0.0</version.kafka>
         <version.log4j2>2.7</version.log4j2>
         <version.maven.plugin.compiler>3.3</version.maven.plugin.compiler>
         <version.maven.plugin.deploy>2.8.2</version.maven.plugin.deploy>
@@ -187,17 +187,31 @@
                 <version>${version.maven.plugin.docker}</version>
                 <executions>
                     <execution>
-                        <id>build-image</id>
+                        <id>build-image-latest</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
+                        <configuration>
+                            <classifier>docker-info-version-latest</classifier>
+                            <tag>latest</tag>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build-image-tag</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>docker-info-version</classifier>
+                            <tag>${project.version}</tag>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
                     <skipPush>true</skipPush>
                     <repository>docker.io/technolords/kafka</repository>
-                    <tag>${project.version}</tag>
                     <buildArgs>
                         <POM_VERSION>${project.version}</POM_VERSION>
                         <KAFKA_VERSION>${version.kafka}</KAFKA_VERSION>
@@ -223,18 +237,29 @@
                         <version>${version.maven.plugin.docker}</version>
                         <executions>
                             <execution>
-                                <id>push-image</id>
+                                <id>push-image-version</id>
                                 <phase>deploy</phase>
                                 <goals>
-                                    <goal>tag</goal>
                                     <goal>push</goal>
                                 </goals>
+                                <configuration>
+                                    <tag>${project.version}</tag>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>push-image-latest</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                                <configuration>
+                                    <tag>latest</tag>
+                                </configuration>
                             </execution>
                         </executions>
                         <configuration>
                             <skipPush>false</skipPush>
                             <repository>docker.io/technolords/kafka</repository>
-                            <tag>latest</tag>
                             <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                             <buildArgs>
                                 <POM_VERSION>${project.version}</POM_VERSION>
